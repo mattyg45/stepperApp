@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Sync With Phone</title>
+    <link rel="stylesheet" href="syncPhone.css"/>
+    <script src="syncPhone.js" defer></script>
+</head>
+<body>
+    <header class="sync-header">
+        <h1>Sync With Phone</h1>
+    </header>
+    
+    <main class="sync-container">
+        <section class="content-wrapper">
+            <h2>Choose Your Phone</h2> 
+            <div class="image-container">
+                <img src="IPhone-X-PNG-Background-Image.png" alt="Iphone" class="phone-img"/>
+                <img src="Android-Phone-Transparent-PNG.png" alt="Android" class="phone-img"/>
+            </div>
+
+            <div class="sync-instructions">
+                <p>What type of phone do you have?</p>
+                <form id="quick-input-form">
+                    <input type="text" placeholder="Enter Phone..." />
+                    <button type="submit">Go</button>
+                </form>
+                <p>Click the button below to sync your data with your phone.</p>
+                <button id="sync-btn">Start Sync</button>
+                <div id="sync-status" class="status-message hidden"></div>
+            </div>
+        </section>
+
+        <section class="sync-animation hidden" id="loading">
+            <h2>Syncing Status</h2> 
+            <div class="loader"></div>
+            <p>Syncing in progress...</p>
+        </section>
+    </main>
+</body>
+</html>

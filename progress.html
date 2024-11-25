@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Progress</title>
+    <link rel="stylesheet" href="progress.css"/>
+    <script src="progress.js" defer></script>
+</head>
+<body>
+    <header class="progress-header">
+        <h1>Progress Page</h1>
+    </header>
+
+    <main class="progress-container">
+        <section class="steps-section">
+            <h2>Update Your Steps</h2>
+
+            <label for="day-select">Select Day:</label>
+            <select id="day-select">
+                <option value="today">Today</option>
+                <option value="yesterday">Yesterday</option>
+                <option value="twoDaysAgo">2 Days Ago</option>
+            </select>
+
+            <input type="number" id="steps-input" placeholder="Enter steps" min="0"/>
+            <button id="update-steps-btn">Add Steps</button>
+            <button id="clear-steps-btn">Clear Table</button> <!-- Clear Table button -->
+        </section>
+
+        <section class="table-section">
+            <h2>Steps Record</h2>
+            <table id="steps-table">
+                <thead>
+                    <tr>
+                        <th>Day</th>
+                        <th>Steps</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </section>
+    </main>
+</body>
+</html>

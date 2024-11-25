@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Track Your Steps</title>
+    <link rel="stylesheet" href="steps.css"/>
+    <script src="steps.js" defer></script>
+</head>
+<body>
+    <header>
+        <h1>Track Your Steps</h1>
+    </header>
+
+    <main class="steps-container">
+        <section class="instructions">
+            <h2>How to Track Your Steps</h2>
+            <ol>
+                <li>Get a pedometer or use your phones health app.</li>
+                <li>Set a daily step goal (e.g., 10,000 steps).</li>
+                <li>Walk as much as you can throughout the day.</li>
+                <li>Track progress by checking your pedometer or app regularly.</li>
+                <li>Celebrate when you reach your goal!</li>
+            </ol>
+            <p>
+                Learn more information on the proper walking form at 
+                <a href="https://www.verywellfit.com/how-to-walk-correctly-5186436" target="_blank">this website</a>.
+            </p>
+        </section>
+
+        <section class="tracker">
+            <h2>Daily Steps Tracker</h2>
+            <form id="step-form">
+                <label for="step-input">Enter your steps:</label>
+                <input type="number" id="step-input" min="0" placeholder="Enter step count..."/>
+                <button type="submit">Add Steps</button>
+            </form>
+            <div id="step-status" class="hidden"></div>
+
+            <button id="color-btn">Change Background Color</button>
+        </section>
+    </main>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Calories Burnt</title>
+    <link rel="stylesheet" href="calsBurnt.css"/>
+    <script src="calsBurnt.js" defer></script>
+</head>
+<body>
+    <header class="calories-header">
+        <h1>Calories Burnt</h1>
+    </header>
+
+    <main class="calories-container">
+        <p>Enter your step count to see how many calories you’ve burnt!</p>
+        
+        <form id="calories-form">
+            <input type="number" id="steps-input" placeholder="Enter steps" min="0" required/>
+            <button type="submit">Calculate</button>
+        </form>
+
+        <div id="result" class="hidden result-box"></div>
+    </main>
+</body>
+</html>
