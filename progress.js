@@ -1,73 +1,95 @@
-const totalSteps = {
-    today: 0,
-    yesterday: 0,
-    twoDaysAgo: 0,
-};
+// Global array to store step data
+let stepsData = [];
 
-// Load steps data from localStorage (if it exists)
-const loadStepsFromStorage = () => {
-    const savedSteps = JSON.parse(localStorage.getItem('totalSteps'));
-    if (savedSteps) {
-        totalSteps.today = savedSteps.today || 0;
-        totalSteps.yesterday = savedSteps.yesterday || 0;
-        totalSteps.twoDaysAgo = savedSteps.twoDaysAgo || 0;
-    }
-    updateTable();
-};
+// Add steps manually
+document.getElementById('add-steps-btn').addEventListener('click', () => {
+    const date = document.getElementById('date-input').value;
+    const steps = document.getElementById('steps-input').value;
 
-// Save the updated steps to localStorage
-const saveStepsToStorage = () => {
-    localStorage.setItem('totalSteps', JSON.stringify(totalSteps));
-};
-
-// Update the steps table by adding new rows
-const updateTable = () => {
-    const tbody = document.getElementById('steps-table').querySelector('tbody');
-    tbody.innerHTML = ''; // Clear current table rows
-
-    // Add a new row for each day with the total steps
-    Object.keys(totalSteps).forEach(day => {
+    if (date && steps) {
+        // Add to steps data array
+        stepsData.push({ date, steps });
+        
+        // Add to table
+        const tableBody = document.querySelector('#steps-table tbody');
         const row = document.createElement('tr');
-        const dayCell = document.createElement('td');
-        dayCell.textContent = day.charAt(0).toUpperCase() + day.slice(1);
-        const stepsCell = document.createElement('td');
-        stepsCell.textContent = totalSteps[day];
+        row.innerHTML = `
+            <td>${date}</td>
+            <td>${steps}</td>
+        `;
+        tableBody.appendChild(row);
 
-        row.appendChild(dayCell);
-        row.appendChild(stepsCell);
-        tbody.appendChild(row);
-    });
-};
-
-// Update steps based on user input
-document.getElementById('update-steps-btn').addEventListener('click', function () {
-    const daySelect = document.getElementById('day-select').value;
-    const stepsInput = document.getElementById('steps-input');
-    const stepsValue = parseInt(stepsInput.value, 10);
-
-    if (!isNaN(stepsValue) && stepsValue > 0) {
-        totalSteps[daySelect] += stepsValue;
-        saveStepsToStorage();
-        updateTable();
-        stepsInput.value = ''; // Clear input field after submission
+        // Clear inputs
+        document.getElementById('date-input').value = '';
+        document.getElementById('steps-input').value = '';
     } else {
-        alert('Please enter a valid number of steps.');
+        alert('Please fill in both the date and steps!');
     }
 });
 
-// Clear the table values by setting all steps to 0
-document.getElementById('clear-steps-btn').addEventListener('click', function () {
-    // Reset all the steps to 0
-    totalSteps.today = 0;
-    totalSteps.yesterday = 0;
-    totalSteps.twoDaysAgo = 0;
-    
-    // Save the updated steps to localStorage
-    saveStepsToStorage();
-    
-    // Update the table to reflect the reset values
-    updateTable();
+// Clear the table and steps data
+document.getElementById('clear-steps-btn').addEventListener('click', () => {
+    stepsData = [];
+    const tableBody = document.querySelector('#steps-table tbody');
+    tableBody.innerHTML = ''; // Clear the table body
 });
 
-// Load the steps data when the page loads
-loadStepsFromStorage();
+// Export steps data as JSON file
+document.getElementById('exportData').addEventListener('click', () => {
+    const blob = new Blob([JSON.stringify(stepsData, null, 2)], { type: 'application/json' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'stepsData.json';
+    link.click();
+});
+
+// Fetch Fitbit Data
+document.getElementById('fetchData').addEventListener('click', async () => {
+    const accessToken = 'YOUR_ACCESS_TOKEN'; // Replace with a valid token
+
+    try {
+        // Fetch user profile data
+        const profileResponse = await fetch('https://api.fitbit.com/1/user/-/profile.json', {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        });
+
+        if (!profileResponse.ok) {
+            throw new Error('Failed to fetch user profile');
+        }
+
+        const profileData = await profileResponse.json();
+        const userId = profileData.user.encodedId;
+
+        // Fetch step count for today
+        const activityResponse = await fetch(`https://api.fitbit.com/1/user/${userId}/activities/steps/date/today/1d.json`, {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        });
+
+        if (!activityResponse.ok) {
+            throw new Error('Failed to fetch activity data');
+        }
+
+        const activityData = await activityResponse.json();
+        const steps = activityData['activities-steps'][0].value;
+
+        // Update the table with Fitbit steps
+        const tableBody = document.querySelector('#steps-table tbody');
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>Today (Fitbit)</td>
+            <td>${steps}</td>
+        `;
+        tableBody.appendChild(row);
+
+        // Add to steps data array
+        stepsData.push({ date: 'Today (Fitbit)', steps });
+
+    } catch (error) {
+        console.error('Error fetching Fitbit data:', error);
+        alert('Error fetching Fitbit data. Please check the console for details.');
+    }
+});

@@ -6,6 +6,8 @@
     <title>Progress</title>
     <link rel="stylesheet" href="progress.css"/>
     <script src="progress.js" defer></script>
+    <!-- Bootstrap CSS for Modal Styling -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
     <header class="progress-header">
@@ -15,26 +17,20 @@
     <main class="progress-container">
         <section class="steps-section">
             <h2>Update Your Steps</h2>
-
-            <label for="day-select">Select Day:</label>
-            <select id="day-select">
-                <option value="today">Today</option>
-                <option value="yesterday">Yesterday</option>
-                <option value="twoDaysAgo">2 Days Ago</option>
-            </select>
-
-            <input type="number" id="steps-input" placeholder="Enter steps" min="0"/>
-            <button id="update-steps-btn">Add Steps</button>
-            <button id="clear-steps-btn">Clear Table</button> <!-- Clear Table button -->
+            <button id="add-steps-btn" class="btn btn-primary" data-toggle="modal" data-target="#addModal">Add Steps</button>
+            <button id="clear-steps-btn" class="btn btn-danger">Clear Table</button> <!-- Clear Table button -->
+            <button id="fetchData" class="btn btn-info">Fetch Fitbit Data</button> <!-- Fetch Fitbit Data button -->
+            <button id="exportData" class="btn btn-success">Export Data as JSON</button> <!-- Export JSON button -->
         </section>
 
         <section class="table-section">
             <h2>Steps Record</h2>
-            <table id="steps-table">
+            <table id="steps-table" class="table table-bordered">
                 <thead>
                     <tr>
-                        <th>Day</th>
+                        <th>Date</th>
                         <th>Steps</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -42,5 +38,76 @@
             </table>
         </section>
     </main>
+
+    <!-- Modal for Adding Steps -->
+    <div class="modal" id="addModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Steps</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="add-step-form">
+                        <div class="form-group">
+                            <label for="add-date-input">Enter Date (YYYY-MM-DD):</label>
+                            <input type="text" class="form-control" id="add-date-input" placeholder="Enter date" required/>
+                        </div>
+                        <div class="form-group">
+                            <label for="add-steps-input">Enter Steps:</label>
+                            <input type="number" class="form-control" id="add-steps-input" placeholder="Enter steps" min="0" required/>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Steps</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Editing Steps -->
+    <div class="modal" id="editModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Edit Steps</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="edit-step-form">
+                        <div class="form-group">
+                            <label for="edit-date-input">Enter Date (YYYY-MM-DD):</label>
+                            <input type="text" class="form-control" id="edit-date-input" required/>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-steps-input">Enter Steps:</label>
+                            <input type="number" class="form-control" id="edit-steps-input" min="0" required/>
+                        </div>
+                        <button type="submit" class="btn btn-warning">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Deleting Steps -->
+    <div class="modal" id="deleteModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Delete Steps</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this step record?</p>
+                    <button id="confirm-delete-btn" class="btn btn-danger">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
